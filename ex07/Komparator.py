@@ -15,38 +15,35 @@ class Komparator:
     def compare_box_plot(self, categorical_var, numerical_var):
         df = self.df
         mpl = MyPlotLib()
-        categories = list(df[categorical_var].unique())
-        df.drop(categories, axis=1, errors='ignore')
-        for cat in categories:
-            mask = df[categorical_var] == cat
-            df[cat] = df[mask][numerical_var]
-        mpl.box_plot(df, categories)
+        df_piv = df.pivot(columns=categorical_var, values=numerical_var)
+        mpl.box_plot(df_piv, list(df_piv.columns))
+
+        # leaving these useless lines here for science
+        # see how more complicated it was before I learnt about PIVOT
+        # categories = list(df[categorical_var].unique())
+        # df.drop(categories, axis=1, errors='ignore')
+        # for cat in categories:
+        #    mask = df[categorical_var] == cat
+        #    df[cat] = df[mask][numerical_var]
+        # mpl.box_plot(df, categories)
 
     def density(self, categorical_var, numerical_var):
         df = self.df
         mpl = MyPlotLib()
-        categories = list(df[categorical_var].unique())
-        df.drop(categories, axis=1, errors='ignore')
-        for cat in categories:
-            mask = df[categorical_var] == cat
-            df[cat] = df[mask][numerical_var]
-        mpl.density(df, categories)
+        df_piv = df.pivot(columns=categorical_var, values=numerical_var)
+        mpl.density(df_piv, list(df_piv.columns))
 
     def compare_histograms(self, categorical_var, numerical_var):
         df = self.df
         mpl = MyPlotLib()
-        categories = list(df[categorical_var].unique())
-        df.drop(categories, axis=1, errors='ignore')
-        for cat in categories:
-            mask = df[categorical_var] == cat
-            df[cat] = df[mask][numerical_var]
-        mpl.histogram(df, categories)
+        df_piv = df.pivot(columns=categorical_var, values=numerical_var)
+        mpl.histogram(df_piv, list(df_piv.columns))
 
 
 if (__name__ == '__main__'):
     fl = FileLoader()
     df = fl.load('athlete_events.csv')
     k = Komparator(df)
-    k.compare_box_plot('Year', 'Height')
-    k.density('Year', 'Height')
-    k.compare_histograms('Year', 'Height')
+    k.compare_box_plot('Sex', 'Height')
+    k.density('Sex', 'Height')
+    k.compare_histograms('Sex', 'Height')
