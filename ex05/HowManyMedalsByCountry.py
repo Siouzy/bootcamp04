@@ -25,3 +25,9 @@ def howManyMedalsByCountry(df, country):
         x, df_filtered, 'B', 'Bronze'), axis=1)
     dic = new_df.set_index('Year').to_dict(orient='index')
     return dic
+
+
+if __name__ == '__main__':
+    fl = FileLoader()
+    df = fl.load('athlete_events.csv')
+    print(howManyMedalsByCountry(df, 'France'))

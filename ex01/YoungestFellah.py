@@ -1,11 +1,16 @@
 from FileLoader import FileLoader
 
+
 def youngestFellah(df, year):
-    yw = df.loc[df['Year'] == year].loc[df['Sex'] == 'F']['Age'].apply(lambda x: float(x)).min()
-    ym = df.loc[df['Year'] == year].loc[df['Sex'] == 'M']['Age'].apply(lambda x: float(x)).min()
+    mask_m = (df.Year == year) & (df.Sex == 'M')
+    mask_f = (df.Year == year) & (df.Sex == 'F')
+    ym = df[mask_m]['Age'].min()
+    yw = df[mask_f]['Age'].min()
 
-    return {'youngest woman' : ym, 'youngest man' : ym}
+    return {'youngest woman': ym, 'youngest man': ym}
 
-fl = FileLoader()
-df = fl.load('athlete_events.csv')
-print(youngestFellah(df, 2004))
+
+if (__name__ == '__main__'):
+    fl = FileLoader()
+    df = fl.load('athlete_events.csv')
+    print(youngestFellah(df, 2004))
